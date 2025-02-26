@@ -8,8 +8,8 @@ Data Processing Pipeline for Bulk RNA-Seq Datasets
 ### Data Staging
 
 1. Build study metadata ISATAB
-2. Transfer ${STUDY_NAME}.isa.zip file to server staging directory: /opt/data/${STUDY_NAME}/metadata/
-3. Transfer raw FASTQ data files to server staging directory: /opt/data/${STUDY_NAME}/raw_data_original/
+2. Transfer ${STUDY_NAME}.isa.zip file to server staging directory: /opt/data/bulk_rnaseq/${STUDY_NAME}/metadata/
+3. Transfer raw FASTQ data files to server staging directory: /opt/data/bulk_rnaseq/${STUDY_NAME}/raw_data_original/
 
 ### Running CCCUPR_bulkRNAseq Pipeline via Slurm Scheduler
 
