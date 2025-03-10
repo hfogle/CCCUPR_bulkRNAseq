@@ -50,13 +50,15 @@ echo "hello $Name!"
 
 ### IO PATHS
 
-PROJ_DIR=$(PWD)
-SAMPLESHEET=${PROJ_DIR}/metadata/samplesheet.tsv
-STUDYDESIGN=${PROJ_DIR}/metadata/studydesign.json
+PROJ_DIR="/home/hfogle/proj/CCCUPR_bulkRNAseq"
+SAMPLESHEET="/opt/data/bulk-RNA-seq/hfranco-240722-OVCAR3/meta_data/samplesheet.tsv"
+STUDYDESIGN="/opt/data/bulk-RNA-seq/hfranco-240722-OVCAR3/meta_data/studydesign.json"
 
 STUDY_ID=jq '.study.study_id' $STUDYDESIGN
+STUDY_ID="hfranco-240722-OVCAR3"
 DATA_DIR=jq '.data_processing.raw_data_path' $STUDYDESIGN
-OUT_DIR= ${PROJ_DIR}/data/${STUDY_ID}
+DATA_DIR="/opt/data/bulk-RNA-seq/hfranco-240722-OVCAR3/raw_data"
+OUT_DIR="${PROJ_DIR}/data/${STUDY_ID}"
 
 ### Create study directories, copy metadata files
 
@@ -73,6 +75,11 @@ mkdir ${OUT_DIR}/logs
 mkdir ${OUT_DIR}/processed_data
 mkdir ${OUT_DIR}/processed_data/processed_reads
 mkdir ${OUT_DIR}/processed_data/transcript_quantification
+mkdir ${OUT_DIR}/processed_data/normalized_counts
+mkdir ${OUT_DIR}/processed_data/differential_gene_expression
+mkdir ${OUT_DIR}/processed_data/differential_transcript_usage
+mkdir ${OUT_DIR}/reports/read_processing
+mkdir ${OUT_DIR}/reports/transcript_quantification
 else 
 echo "NOT WRITABLE, Change Permissions"
 fi
@@ -106,8 +113,8 @@ done
 IS_INTERLEAVED=jq '.data_processing.files_pair_interleaved' $STUDYDESIGN
 R1=jq '.data_processing.r1_file_extension' $STUDYDESIGN
 R2=jq '.data_processing.r2_file_extension' $STUDYDESIGN
-R1=_R1_001.fastq.gz
-R2=_R2_001.fastq.gz
+R1="_R1_001.fastq.gz"
+R2="_R2_001.fastq.gz"
 OUT_DIR=/opt/data/bulk-RNA-seq/hfranco-240722-OVCAR3/processed_data/processed_reads
 if [ $IS_INTERLEAVED = "FALSE"]
   then
@@ -133,6 +140,26 @@ if [ $IS_SEPARATED ]; then
   seqfu -e .ilv.fq.gz -o ${OUT_DIR}/exchange_data/${ID}_merge.ilv.fq.gz
   done
 fi
+
+### Rename files, transfer to working directory
+
+  for ID in $(cut -f1 $SAMPLESHEET | tail -n +2)
+  do
+  SAMPLE_ID=$(awk -v ArrayTaskID=$ID '$1==ArrayTaskID {print $5}' $SAMPLESHEET)
+  GROUP_ID=$(awk -v ArrayTaskID=$ID '$1==ArrayTaskID {print $7}' $SAMPLESHEET)
+  FILE_ID=$(awk -v ArrayTaskID=$ID '$1==ArrayTaskID {print $2}' $SAMPLESHEET)
+  FILE_NAME=${GROUP_ID}_${SAMPLE_ID}
+  file1=$(ls ${DATA_DIR}/*${FILE_ID}*$R1)
+  file2=$(ls ${DATA_DIR}/*${FILE_ID}*$R2)
+  #merge=$(ls ${OUT_DIR}/exchange_data/*${ID}*.ilv.fq.gz) 
+  #seqfu -e .ilv.fq.gz -o ${OUT_DIR}/exchange_data/${ID}_merge.ilv.fq.gz
+  echo $ID
+  echo $FILE_NAME
+  echo $file1
+  echo $file2
+  cp $file1 ${OUT_DIR}/standardized_data/${FILE_NAME}_R1.fq.gz
+  cp $file2 ${OUT_DIR}/standardized_data/${FILE_NAME}_R2.fq.gz
+  done
 ### Create required mapping indexes if not present
 # https://www.gencodegenes.org/human/
 path=/opt/data/bulk-RNA-seq/hfranco-240722-OVCAR3/reference_data

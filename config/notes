@@ -79,6 +79,14 @@ conda install bioconda::bioconductor-genomicfeatures
 conda install bioconda::bioconductor-stager
 conda install bioconda::bioconductor-sva
 
+#####
+git config --global user.name "user id"
+git config --global user.email "your.email@example.com"
+git config --list
 
+git reset --soft HEAD~ # reset to the last commit
+git stash              # stash all the changes in the working tree 
+git push               # push changes 
+git stash pop          # get your changes back
 ############## Scratch
 
