@@ -1,0 +1,17 @@
+TYPE_NAME	TYPE_VALUE	TYPE_CLASS	TYPE_UNIT	TYPE_REFERENCE	TYPE_DISTRIBUTION
+Cancer Subtype	Categorical	FACTOR	Set Membership	Healthy	Categorical
+Treatment	Categorical	FACTOR	Set Membership	Vehicle	Categorical
+Timepoint	Categorical	FACTOR	Set Membership	Initial	Categorical
+Timepoint	Ordinal	FACTOR	Order	1st	Categorical
+Timepoint	Relative Interval	FACTOR	Hours	0	Gamma
+Dose Range	Ordinal	FACTOR	Order	Low (10-20 mg)	Categorical
+Reporter Positive	Binary	COVARIATE	Truth Value		Bernoulli
+Cells	Count	COVARIATE	Integer		Negative Binomial
+Dose	Interval	COVARIATE	mg		Normal
+Cancer Stage	Ordinal	COVARIATE	Integer		Categorical
+Age at Diagnosis	Interval	COVARIATE	Years		Normal
+Source	Categorical	INTERACTION	Set Membership		Categorical
+Batch	Categorical	INTERACTION	Set Membership		Categorical
+Date of Birth	Interval	ATTRIBUTE	Date		Normal
+Sex	Categorical	ATTRIBUTE	Set Membership		Categorical
+Tissue	Categorical	ATTRIBUTE	Set Membership		Categorical
