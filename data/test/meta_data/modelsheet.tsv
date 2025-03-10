@@ -1,0 +1,3 @@
+TYPE_NAME	TYPE_VALUE	TYPE_CLASS	TYPE_UNIT	TYPE_REFERENCE	TYPE_DISTRIBUTION
+Treatment	Categorical	FACTOR	Set Membership	Veh	Categorical
+Cell Line	Categorical	INTERACTION	Set Membership		Categorical
