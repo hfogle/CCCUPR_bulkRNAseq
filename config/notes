@@ -1,0 +1,84 @@
+Pipeline Outline
+
+0. Initialize study
+  - Create working directories
+  - Load conda environment
+  - Import metadata files
+  - Summarize data files by sample (# R1 files, # R2 files, total size in Mb) (reports)
+  - Run file integrity checks
+1. Standardize raw data files
+  - Merge lane/run split files by sample and read pair
+  - Rename files from samplesheet identifiers
+2. Read preprocessing
+  - Trim adapters, polyA, polyG, low quality ends
+  - Filter out short and low quality reads
+  - Deduplicate reads
+  - Generate sample read QC report
+  - MultiQC summary (reports)
+3. Align reads to reference and quantify features
+  - customize feature set, reference sequence, and annotations
+  - build reference index
+  - MultiQC summary (reports)
+4. Sample integrated processing
+  - batch correction
+  - normalization (output)
+  - build statistical models from modelsheet & samplesheet
+  - QC plots (figures)
+    - rRNA content
+    - PCA plot
+    - DGE contrasts (output)
+    - DTU contrasts (output)
+
+Optional Addons
+  - Power analysis
+  - Batch correction (Combat)
+  - Sequera container
+
+
+Illumina Adapter Sequences
+https://knowledge.illumina.com/library-preparation/general/library-preparation-general-reference_material-list/000001314
+
+Illumina Stranded mRNA Prep
+https://www.illumina.com/products/by-type/sequencing-kits/library-prep-kits/stranded-mrna-prep.html#accordion-f81638c2cd-item-fe969be0df
+
+Read Trimming
+https://github.com/OpenGene/fastp
+
+Transcript Counting
+salmon
+
+
+
+#### CONDA INSTALLS
+
+conda config --set channel_priority flexible
+conda create -n bulkRNAseq
+
+# Linux tools
+conda install conda-forge::nano
+conda install conda-forge::visidata
+conda install bioconda::jq
+
+# Primary data processing
+conda install bioconda::seqfu
+conda install bioconda::fastp
+conda install bioconda::mashmap
+conda install bioconda::bedtools
+conda install bioconda::salmon
+conda install bioconda::multiqc
+
+# Secondary data processing
+conda install conda-forge::r-tidyverse
+conda install conda-forge::r-devtools
+conda install conda-forge::r-jsonlite
+
+conda install bioconda::bioconductor-deseq2
+conda install bioconda::bioconductor-tximport
+conda install bioconda::bioconductor-drimseq
+conda install bioconda::bioconductor-genomicfeatures
+conda install bioconda::bioconductor-stager
+conda install bioconda::bioconductor-sva
+
+
+############## Scratch
+
